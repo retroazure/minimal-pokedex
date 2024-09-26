@@ -1,22 +1,26 @@
-// PokemonViewer.tsx
 "use client";
 import React, { useEffect, useState } from "react";
 import usePokemon from "./component/usePokemon"; // Import custom hook
 import Button from "./component/Button"; // Import Button component
 
 const PokemonViewer: React.FC = () => {
-  const { setCount, data, sprite, maxCount } = usePokemon(1); // Initialize hook with starting count of 1
+  const { count, setCount, data, sprite, maxCount } = usePokemon(1); // Initialize hook with starting count of 1
   const [isThrottled, setIsThrottled] = useState(false); // State to manage throttling
+  const [firstPress, setFirstPress] = useState(true); // State to track the first right arrow press
 
   // Combined keydown event handler
   const handleKeyDown = (event: KeyboardEvent) => {
     if (isThrottled) return; // Prevent action if throttled
 
     if (event.key === "ArrowRight" || event.keyCode === 39) {
-      console.log("Right arrow pressed");
-      increment(); // Call increment function
+      // If it's the first press, set count to 2
+      if (firstPress) {
+        setCount(2);
+        setFirstPress(false); // Update firstPress to false after first use
+      } else {
+        increment(); // Call increment function if not the first press
+      }
     } else if (event.key === "ArrowLeft" || event.keyCode === 37) {
-      console.log("Left arrow pressed");
       decrement(); // Call decrement function
     }
 
@@ -31,12 +35,11 @@ const PokemonViewer: React.FC = () => {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isThrottled]);
+  }, [isThrottled, firstPress]); // Include firstPress in the dependency array
 
   const increment = () => {
     setCount((prevCount) => {
       const newCount = Math.min(prevCount + 1, maxCount); // Ensure count does not exceed maxCount
-      console.log(`Incremented count: ${newCount}`); // Log the incremented count
       return newCount;
     });
   };
@@ -44,7 +47,6 @@ const PokemonViewer: React.FC = () => {
   const decrement = () => {
     setCount((prevCount) => {
       const newCount = Math.max(prevCount - 1, 1); // Decrement and ensure it doesn't go below 1
-      console.log(`Decremented count: ${newCount}`); // Log the decremented count
       return newCount;
     });
   };
