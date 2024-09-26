@@ -1,10 +1,11 @@
+// PokemonViewer.tsx
 "use client";
 import React, { useEffect, useState } from "react";
 import usePokemon from "./component/usePokemon"; // Import custom hook
 import Button from "./component/Button"; // Import Button component
 
 const PokemonViewer: React.FC = () => {
-  const { setCount, data, sprite, maxCount } = usePokemon(1); // Initialize hook with starting count
+  const { setCount, data, sprite, maxCount } = usePokemon(1); // Initialize hook with starting count of 1
   const [isThrottled, setIsThrottled] = useState(false); // State to manage throttling
 
   // Combined keydown event handler
@@ -13,15 +14,15 @@ const PokemonViewer: React.FC = () => {
 
     if (event.key === "ArrowRight" || event.keyCode === 39) {
       console.log("Right arrow pressed");
-      increment();
+      increment(); // Call increment function
     } else if (event.key === "ArrowLeft" || event.keyCode === 37) {
       console.log("Left arrow pressed");
-      decrement();
+      decrement(); // Call decrement function
     }
 
-    // Set throttle state and reset after 500ms
+    // Set throttle state and reset after 50ms
     setIsThrottled(true);
-    setTimeout(() => setIsThrottled(false), 500); // Adjust the duration as needed
+    setTimeout(() => setIsThrottled(false), 50); // Adjust the duration as needed
   };
 
   useEffect(() => {
@@ -35,13 +36,17 @@ const PokemonViewer: React.FC = () => {
   const increment = () => {
     setCount((prevCount) => {
       const newCount = Math.min(prevCount + 1, maxCount); // Ensure count does not exceed maxCount
-      console.log(`Incremented count: ${newCount}`);
+      console.log(`Incremented count: ${newCount}`); // Log the incremented count
       return newCount;
     });
   };
 
   const decrement = () => {
-    setCount((prevCount) => Math.max(prevCount - 1, 1)); // Decrement and ensure it doesn't go below 1
+    setCount((prevCount) => {
+      const newCount = Math.max(prevCount - 1, 1); // Decrement and ensure it doesn't go below 1
+      console.log(`Decremented count: ${newCount}`); // Log the decremented count
+      return newCount;
+    });
   };
 
   return (

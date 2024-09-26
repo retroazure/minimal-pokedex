@@ -13,7 +13,7 @@ const usePokemon = (initialCount = 1) => {
   const [count, setCount] = useState<number>(initialCount);
   const [data, setData] = useState<PokemonData | null>(null);
   const [sprite, setSprite] = useState<string>("");
-  const [maxCount, setMaxCount] = useState<number>(0);
+  const [maxCount, setMaxCount] = useState<number>(1);
 
   useEffect(() => {
     const fetchTotalPokemonCount = async () => {
