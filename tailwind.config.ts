@@ -9,15 +9,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        pokedexRed: "#FF3E3E",
-        pokedexDarkRed: "#D32F2F",
-        pokedexGradientStart: "#FF3E3E",
-        pokedexGradientEnd: "#E53935",
+        pokedexRed: "#FF4C4C", // Bright red
+        pokedexDarkRed: "#D32F2F", // Keep the darker variant
+        pokedexGradientStart: "#FF4C4C", // Brighter red
+        pokedexGradientEnd: "#FF8A80", // Soft pink
         screenBackground: "#F4F4F9",
         buttonBlue: "#1E88E5",
         buttonBlueHover: "#1565C0",
-        background: "var(--background)",
-        foreground: "var(--foreground)",
       },
       fontFamily: {
         sans: ["Inter", "sans-serif"],

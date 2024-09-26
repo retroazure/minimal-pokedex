@@ -1,4 +1,3 @@
-// Button.tsx
 import React from "react";
 
 interface ButtonProps {
@@ -10,7 +9,7 @@ const Button: React.FC<ButtonProps> = ({ onClick, children }) => {
   return (
     <button
       onClick={onClick}
-      className="bg-blue-500 text-white py-2 px-6 rounded-full shadow-lg hover:bg-blue-600 transform transition-all hover:scale-105 focus:outline-none focus:ring focus:ring-blue-300"
+      className="bg-buttonBlue text-white py-2 px-6 rounded-full shadow-lg hover:bg-buttonBlueHover transform transition-transform duration-300 hover:scale-105 active:scale-95 focus:outline-none focus:ring focus:ring-blue-300"
     >
       {children}
     </button>

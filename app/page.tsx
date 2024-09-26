@@ -4,76 +4,69 @@ import usePokemon from "./component/usePokemon"; // Import custom hook
 import Button from "./component/Button"; // Import Button component
 
 const PokemonViewer: React.FC = () => {
-  const { setCount, data, sprite, maxCount } = usePokemon(1); // Initialize hook with starting count of 1
-  const [isThrottled, setIsThrottled] = useState(false); // State to manage throttling
-  const [firstPress, setFirstPress] = useState(true); // State to track the first right arrow press
+  const { setCount, data, sprite, maxCount } = usePokemon(1);
+  const [isThrottled, setIsThrottled] = useState(false);
+  const [firstPress, setFirstPress] = useState(true);
 
   // Combined keydown event handler
   const handleKeyDown = (event: KeyboardEvent) => {
-    if (isThrottled) return; // Prevent action if throttled
+    if (isThrottled) return;
 
     if (event.key === "ArrowRight" || event.keyCode === 39) {
-      // If it's the first press, set count to 2
       if (firstPress) {
         setCount(2);
-        setFirstPress(false); // Update firstPress to false after first use
+        setFirstPress(false);
       } else {
-        increment(); // Call increment function if not the first press
+        increment();
       }
     } else if (event.key === "ArrowLeft" || event.keyCode === 37) {
-      decrement(); // Call decrement function
+      decrement();
     }
 
-    // Set throttle state and reset after 50ms
     setIsThrottled(true);
-    setTimeout(() => setIsThrottled(false), 50); // Adjust the duration as needed
+    setTimeout(() => setIsThrottled(false), 50);
   };
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
-
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isThrottled, firstPress]); // Include firstPress in the dependency array
+  }, [isThrottled, firstPress]);
 
   const increment = () => {
-    setCount((prevCount) => {
-      const newCount = Math.min(prevCount + 1, maxCount); // Ensure count does not exceed maxCount
-      return newCount;
-    });
+    setCount((prevCount) => Math.min(prevCount + 1, maxCount));
   };
 
   const decrement = () => {
-    setCount((prevCount) => {
-      const newCount = Math.max(prevCount - 1, 1); // Decrement and ensure it doesn't go below 1
-      return newCount;
-    });
+    setCount((prevCount) => Math.max(prevCount - 1, 1));
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-red-500 to-pink-500">
-      <div className="bg-gradient-to-r from-gray-100 via-white to-gray-100 rounded-lg p-8 shadow-xl w-full max-w-md md:max-w-lg lg:max-w-xl">
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-pokedexRed via-red-400 to-pink-400">
+      <div className="bg-white rounded-xl p-8 shadow-2xl w-full max-w-md md:max-w-lg lg:max-w-xl animate-fadeIn">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-gray-700 text-3xl font-bold">Pokedex</h1>
+          <h1 className="text-gray-800 text-4xl font-bold font-sans">
+            Pokedex
+          </h1>
         </div>
 
-        <div className="bg-gray-200 rounded-lg p-6 text-center border border-gray-300 shadow-inner">
+        <div className="bg-gray-50 rounded-lg p-6 text-center border border-gray-200 shadow-inner">
           {data ? (
             <>
-              <p className="text-2xl font-semibold text-gray-800 mb-4 capitalize">
+              <p className="text-3xl font-semibold text-gray-900 mb-4 capitalize font-sans">
                 {data.name}
               </p>
               {sprite && (
                 <img
                   alt={`${data.name} sprite`}
                   src={sprite}
-                  className="mx-auto w-32 h-32"
+                  className="mx-auto w-32 h-32 hover:scale-110 transition-transform"
                 />
               )}
             </>
           ) : (
-            <p className="text-gray-800">Loading...</p>
+            <p className="text-gray-700">Loading...</p>
           )}
         </div>
 
