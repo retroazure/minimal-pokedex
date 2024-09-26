@@ -4,7 +4,7 @@ import usePokemon from "./component/usePokemon"; // Import custom hook
 import Button from "./component/Button"; // Import Button component
 
 const PokemonViewer: React.FC = () => {
-  const { count, setCount, data, sprite, maxCount } = usePokemon(1); // Initialize hook with starting count
+  const { setCount, data, sprite, maxCount } = usePokemon(1); // Initialize hook with starting count
   const [isThrottled, setIsThrottled] = useState(false); // State to manage throttling
 
   // Combined keydown event handler

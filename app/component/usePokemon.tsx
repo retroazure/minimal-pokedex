@@ -9,8 +9,8 @@ interface PokemonData {
   };
 }
 
-const usePokemon = () => {
-  const [count, setCount] = useState<number>(1);
+const usePokemon = (initialCount = 1) => {
+  const [count, setCount] = useState<number>(initialCount);
   const [data, setData] = useState<PokemonData | null>(null);
   const [sprite, setSprite] = useState<string>("");
   const [maxCount, setMaxCount] = useState<number>(0);
@@ -18,7 +18,7 @@ const usePokemon = () => {
   useEffect(() => {
     const fetchTotalPokemonCount = async () => {
       try {
-        const res = await axios.get("https://pokeapi.co/api/v2/pokemon?limit=1");
+        // const res = await axios.get("https://pokeapi.co/api/v2/pokemon?limit=1");
         const countRes = await axios.get("https://pokeapi.co/api/v2/pokemon?limit=0"); // Fetch all Pokémon to get count
         setMaxCount(countRes.data.count); // Set maxCount with the total number of Pokémon
         console.log(`Total Pokémon count fetched: ${countRes.data.count}`); // Log the fetched count
