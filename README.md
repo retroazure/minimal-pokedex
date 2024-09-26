@@ -2,6 +2,8 @@
 
 ## POKEDEX APP
 
+Created this app using nextjs, tailwindcss, typescript, PokéAPI (https://pokeapi.co/)
+
 Running the development server:
 
 ```bash
