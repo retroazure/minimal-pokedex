@@ -4,7 +4,7 @@ import usePokemon from "./component/usePokemon"; // Import custom hook
 import Button from "./component/Button"; // Import Button component
 
 const PokemonViewer: React.FC = () => {
-  const { count, setCount, data, sprite, maxCount } = usePokemon(1); // Initialize hook with starting count of 1
+  const { setCount, data, sprite, maxCount } = usePokemon(1); // Initialize hook with starting count of 1
   const [isThrottled, setIsThrottled] = useState(false); // State to manage throttling
   const [firstPress, setFirstPress] = useState(true); // State to track the first right arrow press
 
