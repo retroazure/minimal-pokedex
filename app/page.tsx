@@ -1,101 +1,109 @@
-import Image from "next/image";
+"use client";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-export default function Home() {
+interface PokemonData {
+  name: string;
+  sprites: {
+    front_default: string;
+  };
+}
+
+const PokemonViewer: React.FC = () => {
+  const [count, setCount] = useState<number>(1);
+  const [data, setData] = useState<PokemonData | null>(null);
+  const [sprite, setSprite] = useState<string>("");
+  const [maxCount, setMaxCount] = useState<number>(0); // State to hold the total number of Pokémon
+
+  // Fetch total Pokémon count on component mount
+  useEffect(() => {
+    const fetchTotalPokemonCount = async () => {
+      try {
+        const res = await axios.get("https://pokeapi.co/api/v2/pokemon?limit=1");
+        setMaxCount(res.data.count); // Set maxCount with the total number of Pokémon
+      } catch (error) {
+        console.error("Error fetching total Pokémon count:", error);
+      }
+    };
+
+    fetchTotalPokemonCount();
+  }, []);
+
+  // Fetch data for the current Pokémon, count is the same as the id of the pokemon and it will change based on the prev and next buttons
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get<PokemonData>(
+          `https://pokeapi.co/api/v2/pokemon/${count}`
+        );
+        setData(res.data);
+        setSprite(res.data.sprites.front_default);
+      } catch (error) {
+        console.error("Error fetching Pokémon data:", error);
+      }
+    };
+
+    fetchData();
+  }, [count]);
+
+  // Increment count but prevent it from going above the max count
+  const increment = () => {
+    setCount((prevCount) => (prevCount < maxCount ? prevCount + 1 : maxCount));
+  };
+
+  // Decrement count but prevent it from going below 1
+  const decrement = () => {
+    setCount((prevCount) => (prevCount > 1 ? prevCount - 1 : 1));
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-red-500 to-pink-500">
+      <div className="bg-gradient-to-r from-gray-100 via-white to-gray-100 rounded-lg p-8 shadow-xl w-full max-w-md md:max-w-lg lg:max-w-xl">
+        <div className="flex justify-between items-center mb-6">
+          <div className="flex gap-2 items-center">
+            <div className="bg-green-400 w-4 h-4 rounded-full shadow"></div>
+            <div className="bg-yellow-300 w-4 h-4 rounded-full shadow"></div>
+            <div className="bg-red-400 w-4 h-4 rounded-full shadow"></div>
+          </div>
+          <h1 className="text-gray-700 text-3xl font-bold">Pokedex</h1>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        {/* Pokemon Image and Name */}
+        <div className="bg-gray-200 rounded-lg p-6 text-center border border-gray-300 shadow-inner">
+          {data && (
+            <>
+              <p className="text-2xl font-semibold text-gray-800 mb-4 capitalize">
+                {data.name}
+              </p>
+              {sprite && (
+                <img
+                  alt={`${data.name} sprite`}
+                  src={sprite}
+                  className="mx-auto w-32 h-32"
+                />
+              )}
+            </>
+          )}
+        </div>
+
+        {/* Navigation Buttons */}
+        <div className="flex justify-between mt-6">
+          <button
+            onClick={decrement}
+            className="bg-blue-500 text-white py-2 px-6 rounded-full shadow-lg hover:bg-blue-600 transform transition-all hover:scale-105 focus:outline-none focus:ring focus:ring-blue-300"
+          >
+            Prev
+          </button>
+          <button
+            onClick={increment}
+            className="bg-blue-500 text-white py-2 px-6 rounded-full shadow-lg hover:bg-blue-600 transform transition-all hover:scale-105 focus:outline-none focus:ring focus:ring-blue-300"
+          >
+            Next
+          </button>
+        </div>
+      </div>
     </div>
   );
-}
+};
+
+export default PokemonViewer;

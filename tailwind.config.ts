@@ -9,8 +9,18 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        pokedexRed: "#FF3E3E",
+        pokedexDarkRed: "#D32F2F",
+        pokedexGradientStart: "#FF3E3E",
+        pokedexGradientEnd: "#E53935",
+        screenBackground: "#F4F4F9",
+        buttonBlue: "#1E88E5",
+        buttonBlueHover: "#1565C0",
         background: "var(--background)",
         foreground: "var(--foreground)",
+      },
+      fontFamily: {
+        sans: ["Inter", "sans-serif"],
       },
     },
   },
