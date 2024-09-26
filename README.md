@@ -1,12 +1,12 @@
 
 
-## Getting Started
+## POKEDEX APP
 
-First, run the development server:
-
-DONT FORGET TO RUN npm i
+Running the development server:
 
 ```bash
+npm i
+
 npm run dev
 # or
 yarn dev
